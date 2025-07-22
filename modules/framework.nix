@@ -294,7 +294,6 @@
       powerKeyLongPress = "poweroff";
       lidSwitch = "suspend";
       lidSwitchExternalPower = "lock";
-      handleHibernateKey = "hibernate";
     };
 
     # Automatic screen brightness
