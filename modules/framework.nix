@@ -130,7 +130,7 @@
   # === Power Management ===
   powerManagement = {
     enable = true;
-    cpuFreqGovernor = lib.mkDefault "powersave";
+    cpuFreqGovernor = lib.mkDefault "schedutil";  # Modern scheduler-based governor
     powertop.enable = true;
   };
 
@@ -208,11 +208,7 @@
     };
   };
 
-  # CPU frequency scaling (built-in NixOS power management)
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "schedutil";  # Modern scheduler-based governor
-  };
+  # CPU frequency scaling is configured in the main powerManagement block above
 
   # Thermal management
   services.thermald.enable = true;
