@@ -16,8 +16,7 @@
     desktopManager.gnome.enable = true;
   };
 
-  # Enable Wayland for Framework 12's modern display
-  programs.wayland.enable = true;
+  # Wayland is enabled by default with GNOME
 
   # === Framework 12 Specific Hardware ===
   imports = [

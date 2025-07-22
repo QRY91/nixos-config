@@ -19,6 +19,27 @@ sudo cp /etc/nixos/hardware-configuration.nix ./hosts/framework12/hardware-confi
 cat ./hosts/framework12/hardware-configuration.nix
 ```
 
+### Step 1.5: Check and Set Hostname
+Check what your current hostname is and update if needed:
+
+```bash
+# Check current hostname
+hostname
+
+# Check what's in the configuration
+grep "hostName" ./hosts/framework12/configuration.nix
+
+# If you want to change it, edit the configuration:
+sudo nano ./hosts/framework12/configuration.nix
+# Look for: networking.hostName = "framework12";
+# Change "framework12" to whatever you prefer (e.g., "qry-framework", "qry-laptop", etc.)
+
+# Generate a unique hostId (required for some NixOS features)
+head -c 8 /etc/machine-id
+# Copy this value and update the hostId line in configuration.nix:
+# networking.hostId = "your-8-char-id-here";
+```
+
 ### Step 2: Gradual Module Enablement
 The flake is currently configured with most modules disabled to avoid conflicts. Enable them one by one:
 
