@@ -101,10 +101,7 @@
     docker-compose
 
     # === QRY Custom Tools ===
-    # Note: These will be custom packages we'll create
-    # (callPackage ../packages/uroboro.nix {})
-    # (callPackage ../packages/wherewasi.nix {})
-    # (callPackage ../packages/doggowoof.nix {})
+    # Note: Custom tools will be installed manually
 
     # === System Development ===
     strace
@@ -265,14 +262,8 @@
     # === Message Queues ===
     redis
 
-    # === Time Tracking ===
-    # Note: This is where uroboro will fit in
-
-    # === Context Management ===
-    # Note: This is where wherewasi will fit in
-
-    # === System Monitoring ===
-    # Note: This is where doggowoof will fit in
+    # === Custom QRY Tools ===
+    # Note: uroboro, wherewasi, and doggowoof will be installed manually
   ];
 
   # === Programming Language Configuration ===
@@ -356,7 +347,6 @@
       gl = "git pull";
 
       # Docker shortcuts
-      d = "docker";
       dc = "docker-compose";
 
       # System shortcuts
@@ -365,10 +355,10 @@
       df = "duf";
       ps = "procs";
 
-      # QRY tools (once implemented)
-      u = "uroboro";
-      w = "wherewasi";
-      d = "doggowoof";
+      # QRY tools (will be installed manually)
+      # u = "uroboro";
+      # w = "wherewasi";
+      # dw = "doggowoof";
 
       # Nix shortcuts
       nrs = "sudo nixos-rebuild switch";

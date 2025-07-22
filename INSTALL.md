@@ -1,26 +1,22 @@
 # QRY NixOS Installation Guide
-## Testing on Debbie → Deploying to Framework 12
+## Framework 12 Direct Installation
 
-**Philosophy**: Test systematically on Debbie, deploy confidently to Framework 12.
-
-**Timeline**: 
-- Phase 1: Debbie installation and testing (This week)
-- Phase 2: Framework 12 deployment (Next week when it arrives)
+**Philosophy**: Deploy systematically to Framework 12 with proven NixOS configuration.
 
 ---
 
-## Phase 1: Debbie Installation
+## Framework 12 Installation
 
 ### Prerequisites
 
 **What you need**:
-- Debbie (your upstairs Debian desktop)
+- Framework 12 laptop
 - USB stick (8GB+)
 - Internet connection
 - This configuration repo
 - About 2-3 hours for full setup
 
-**Important**: We're going to completely wipe Debbie. Make sure there's nothing precious on it.
+**Important**: This will completely wipe the Framework 12. Make sure there's nothing precious on it.
 
 ### Step 1: Prepare Installation Media
 
@@ -38,8 +34,8 @@ sudo dd if=latest-nixos-gnome-x86_64-linux.iso of=/dev/sdX bs=4M status=progress
 ### Step 2: Boot and Install Base System
 
 1. **Boot from USB**
-   - Insert USB into Debbie
-   - Boot from USB (F12 or whatever Debbie's boot menu key is)
+   - Insert USB into Framework 12
+   - Boot from USB (F12 or power on with USB inserted)
    - Select "NixOS Live"
 
 2. **Network Setup**
@@ -111,10 +107,9 @@ su - qry
 # Install git if not available
 nix-shell -p git
 
-# Clone the configuration
-git clone https://github.com/your-username/qry-nixos-config.git ~/nixos-config
-# Or if local:
-# Copy the configuration files from your existing setup
+# Clone the configuration (adjust URL as needed)
+git clone /path/to/qry-nixos-config ~/nixos-config
+# Or copy from USB if you have it there
 
 # Move to system location
 sudo mv ~/nixos-config /etc/nixos/
@@ -125,10 +120,10 @@ sudo chown -R root:root /etc/nixos/nixos-config
 
 ```bash
 # Backup the generated hardware config
-sudo cp /etc/nixos/hardware-configuration.nix /etc/nixos/nixos-config/hosts/debbie/hardware-configuration.nix
+sudo cp /etc/nixos/hardware-configuration.nix /etc/nixos/nixos-config/hosts/framework12/hardware-configuration.nix
 
 # Edit hostname in the hardware config if needed
-sudo nano /etc/nixos/nixos-config/hosts/debbie/hardware-configuration.nix
+sudo nano /etc/nixos/nixos-config/hosts/framework12/hardware-configuration.nix
 ```
 
 ### Step 5: Deploy QRY Configuration
@@ -137,11 +132,11 @@ sudo nano /etc/nixos/nixos-config/hosts/debbie/hardware-configuration.nix
 # Navigate to configuration directory
 cd /etc/nixos/nixos-config
 
-# Build and switch to Debbie configuration
-sudo nixos-rebuild switch --flake .#debbie
+# Build and switch to Framework 12 configuration
+sudo nixos-rebuild switch --flake .#framework12
 
 # This will take a while (downloading packages, building system)
-# Go make coffee, this is your systematic testing moment!
+# Go make coffee, this is your systematic installation moment!
 ```
 
 ### Step 6: Verify Installation
@@ -213,28 +208,7 @@ steam --version
 - [ ] Firewall configured properly
 - [ ] SSH access works
 
----
-
-## Phase 2: Framework 12 Deployment
-
-Once everything works perfectly on Debbie, you're ready for Framework 12.
-
-### Pre-Framework Checklist
-
-- [ ] All applications tested and working on Debbie
-- [ ] Configuration documented and version controlled
-- [ ] Backup strategy tested
-- [ ] Known issues documented with solutions
-- [ ] Framework 12 specific modules reviewed
-
-### Framework 12 Installation Process
-
-```bash
-# Same initial setup as Debbie, but with Framework config
-sudo nixos-rebuild switch --flake .#framework12
-```
-
-### Framework 12 Specific Tests
+### Step 7: Framework 12 Specific Verification
 
 **Hardware Verification**:
 - [ ] All expansion cards detected
@@ -343,17 +317,17 @@ powertop
 **Query Phase**:
 - What specific functionality needs verification?
 - What are the critical use cases for your workflow?
-- What could break during the migration?
+- What Framework 12 specific features need testing?
 
 **Refine Phase**:
 - Test each component systematically
 - Document issues and solutions
-- Optimize configurations based on testing
+- Optimize configurations for Framework 12
 
 **Yield Phase**:
 - Document working configurations
 - Create troubleshooting guides
-- Share successful approaches
+- Share successful Framework approaches
 
 ### Test Scripts
 
@@ -382,6 +356,10 @@ curl -s http://127.0.0.1:11434/api/version >/dev/null && echo "✅ Ollama runnin
 echo "Testing gaming..."
 steam --version >/dev/null 2>&1 && echo "✅ Steam available" || echo "❌ Steam not working"
 
+# Test Framework hardware
+echo "Testing Framework 12 hardware..."
+lsusb | grep -i framework && echo "✅ Framework hardware detected" || echo "❌ Framework hardware issues"
+
 echo "=== Test Complete ==="
 ```
 
@@ -389,20 +367,17 @@ echo "=== Test Complete ==="
 
 ## Success Criteria
 
-### Debbie Testing Success
+### Framework 12 Installation Success
 - [ ] All applications launch successfully
 - [ ] Development workflow functional
 - [ ] Creative tools working
 - [ ] AI stack operational
 - [ ] Gaming platform ready
-- [ ] System stable for 24+ hours
-- [ ] No critical error messages in logs
-
-### Framework 12 Deployment Success
-- [ ] All Debbie tests pass
 - [ ] Framework-specific hardware working
 - [ ] Battery life acceptable (6+ hours normal use)
 - [ ] Performance meets expectations
+- [ ] System stable for 24+ hours
+- [ ] No critical error messages in logs
 - [ ] Can work on real projects immediately
 - [ ] Backup and recovery tested
 
@@ -416,11 +391,10 @@ echo "=== Test Complete ==="
 # Keep configuration in git
 cd /etc/nixos/nixos-config
 git add .
-git commit -m "Working Debbie configuration"
+git commit -m "Working Framework 12 configuration"
 git push
 
-# Tag stable configurations
-git tag debbie-stable-v1.0
+# Tag stable configuration
 git tag framework12-stable-v1.0
 ```
 
@@ -435,7 +409,7 @@ sudo nix-collect-garbage -d
 sudo nix-store --optimize
 
 # Backup verification
-borgmatic check --repository /home/qry/backups/debbie
+borgmatic check --repository /home/qry/backups/framework12
 ```
 
 ### Documentation
@@ -451,12 +425,12 @@ Keep detailed notes of:
 
 ## Next Steps
 
-Once both systems are running smoothly:
+Once the Framework 12 system is running smoothly:
 
-1. **Package Custom Tools**: Convert uroboro, wherewasi, doggowoof to Nix packages
+1. **Install Custom Tools**: Add uroboro, wherewasi, doggowoof manually
 2. **Optimize Workflows**: Create development environments for different projects
 3. **Scale Configuration**: Adapt for additional machines
-4. **Community Contribution**: Share successful patterns with NixOS community
+4. **Community Contribution**: Share successful Framework + NixOS patterns
 
 **Remember**: This isn't just an OS installation—it's building the foundation for years of systematic, anti-fragile computing. Take time to understand each component and document your learnings.
 

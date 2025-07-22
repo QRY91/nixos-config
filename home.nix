@@ -76,11 +76,8 @@
     age                 # Modern encryption
     pass                # Password store
 
-    # === QRY Tools (placeholders for custom tools) ===
-    # These will be replaced with actual custom packages
-    # uroboro
-    # wherewasi
-    # doggowoof
+    # === QRY Tools ===
+    # Custom tools will be installed manually
   ];
 
   # === Shell Configuration ===
@@ -186,7 +183,7 @@
 
       # Productivity
       note = "obsidian";
-      todo = "echo 'Use uroboro for task management'";
+      todo = "echo 'Task management system pending'";
     };
 
     # Additional shell configuration
@@ -521,9 +518,7 @@
         yield = "What have we learned and documented?"
 
         [tools]
-        uroboro = "Work documentation and acknowledgment system"
-        wherewasi = "Context generation for AI collaboration"
-        doggowoof = "Cost tracking and optimization"
+        # Custom QRY tools will be documented here once installed
       '';
     };
   };

@@ -1,5 +1,5 @@
 {
-  description = "QRY Framework 12 + NixOS: Systematic Development Environment";
+  description = "QRY Framework 12 NixOS: Systematic Development Environment";
 
   inputs = {
     # Main nixpkgs - unstable for latest packages and Framework 12 support
@@ -26,7 +26,8 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
 
-      # Common configuration for both hosts
+      # Common configuration for Framework 12
+      # Enable modules gradually in this order:
       commonModules = [
         # Enable flakes system-wide
         ({ ... }: {
@@ -34,36 +35,36 @@
           nixpkgs.config.allowUnfree = true;
         })
 
-        # Import our custom modules
+        # STEP 1: Start with common module (always enabled)
         ./modules/common.nix
-        ./modules/development.nix
-        ./modules/creative.nix
-        ./modules/gaming.nix
-        ./modules/ai-tools.nix
 
-        # Home-manager integration
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.qry = import ./home.nix;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-        }
+        # STEP 2: Add development tools (uncomment when ready)
+        # ./modules/development.nix
 
-        # Musnix for pro audio
-        musnix.nixosModules.musnix
+        # STEP 3: Add creative applications (uncomment when ready)
+        # ./modules/creative.nix
+
+        # STEP 4: Add gaming support (uncomment when ready)
+        # ./modules/gaming.nix
+
+        # STEP 5: Add AI tools (uncomment when ready)
+        # ./modules/ai-tools.nix
+
+        # STEP 6: Add home-manager (uncomment when ready)
+        # home-manager.nixosModules.home-manager
+        # {
+        #   home-manager.useGlobalPkgs = true;
+        #   home-manager.useUserPackages = true;
+        #   home-manager.users.qry = import ./home.nix;
+        #   home-manager.extraSpecialArgs = { inherit inputs; };
+        # }
+
+        # STEP 7: Add pro audio support (uncomment when ready)
+        # musnix.nixosModules.musnix
       ];
     in
     {
-      # Test configuration for Debian desktop (Debbie)
-      nixosConfigurations.debbie = nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = { inherit inputs; };
-        modules = commonModules ++ [
-          ./hosts/debbie/configuration.nix
-          ./hosts/debbie/hardware-configuration.nix
-        ];
-      };
+
 
       # Production configuration for Framework 12
       nixosConfigurations.framework12 = nixpkgs.lib.nixosSystem {
@@ -71,7 +72,8 @@
         specialArgs = { inherit inputs; };
         modules = commonModules ++ [
           # Framework 12 specific hardware support
-          nixos-hardware.nixosModules.framework-13-7040-amd  # Adjust for your model
+          # Note: Framework 12 may not have specific nixos-hardware module yet
+          # nixos-hardware.nixosModules.framework-13-7040-amd  # Uncomment and adjust if available
           ./hosts/framework12/configuration.nix
           ./hosts/framework12/hardware-configuration.nix
           ./modules/framework.nix
@@ -90,11 +92,11 @@
         shellHook = ''
           echo "QRY NixOS Development Environment"
           echo "Available configurations:"
-          echo "  - debbie (test configuration)"
+          echo "  - test (minimal test configuration)"
           echo "  - framework12 (production configuration)"
           echo ""
           echo "To build and switch:"
-          echo "  sudo nixos-rebuild switch --flake .#debbie"
+          echo "  sudo nixos-rebuild switch --flake .#test"
           echo "  sudo nixos-rebuild switch --flake .#framework12"
         '';
       };
