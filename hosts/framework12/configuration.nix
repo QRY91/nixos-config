@@ -38,9 +38,6 @@
     "splash"                     # Boot splash
   ];
 
-  # Latest kernel for Framework 12 support
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
   # Framework specific kernel modules
   boot.kernelModules = [
     "framework_laptop"           # Framework laptop support
