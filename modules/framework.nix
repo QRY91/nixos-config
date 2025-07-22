@@ -208,19 +208,10 @@
     };
   };
 
-  # Auto CPU frequency scaling
-  services.auto-cpufreq = {
+  # CPU frequency scaling (built-in NixOS power management)
+  powerManagement = {
     enable = true;
-    settings = {
-      battery = {
-        governor = "powersave";
-        turbo = "never";
-      };
-      charger = {
-        governor = "performance";
-        turbo = "auto";
-      };
-    };
+    cpuFreqGovernor = "schedutil";  # Modern scheduler-based governor
   };
 
   # Thermal management
@@ -269,10 +260,7 @@
       horizontalScrolling = true;
     };
 
-    # Touchscreen support (if available)
-    touchscreen = {
-      naturalScrolling = true;
-    };
+
   };
 
   # === Framework Specific Services ===
@@ -468,22 +456,15 @@
   boot.plymouth.enable = true;                     # Smooth boot experience
 
   # === Framework Backup Considerations ===
-  # Add Framework-specific paths to backup exclusions
-  services.borgbackup.jobs = lib.mkIf (config.services.borgbackup.jobs != {}) {
-    framework12.exclude = [
-      "/sys"
-      "/proc"
-      "/dev"
-      "/tmp"
-      "/var/tmp"
-      "/var/cache"
-      "/home/*/.cache"
-      "/home/*/.local/share/Trash"
-      # Framework specific exclusions
-      "/var/lib/fwupd/pending"         # Firmware update cache
-      "/var/log/fwupd"                 # Firmware logs
-    ];
-  };
+  # When configuring borgbackup, consider excluding these Framework-specific paths:
+  # - /var/lib/fwupd/pending     # Firmware update cache
+  # - /var/log/fwupd             # Firmware logs
+  #
+  # Example borgbackup exclude configuration:
+  # services.borgbackup.jobs.mybackup.exclude = [
+  #   "/var/lib/fwupd/pending"
+  #   "/var/log/fwupd"
+  # ];
 
   # === Framework Documentation ===
   environment.etc."qry/framework-optimization".text = ''
